@@ -1,0 +1,297 @@
+/* Para oscurecer el texto de la tabla */
+.form-container,
+.form h2,
+.form label,
+.form input{
+  padding: 12px 15px;
+  color: #000; 
+  font-weight: bold; 
+}
+
+.table th,
+.table td {
+  padding: 12px 15px;
+  color: #000; 
+  font-weight: bold; 
+} 
+body {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.422), rgba(0, 0, 0, 0.445)),
+    url(../IMG/Fondo.jpg);
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh; 
+}
+
+.btn-inventario,
+.btn-ventas {
+  color: #000; 
+  font-weight: bold;
+  padding: 40px 60px; 
+  margin: 50px; 
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  font-size: 34px; 
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 10px;
+  border-color: black;
+  border: 10px;
+}
+
+.btn-inventario:hover,
+.btn-ventas:hover {
+  background-color: #D67E02;
+  color: rgb(0, 0, 0);
+}
+
+/* Estilos para la tabla */
+
+.main {
+  position: relative;
+  padding: 20px 60px;
+  width: 100%;
+}
+
+.attendance {
+  margin-top: 0px;
+  text-transform: capitalize;
+}
+
+.attendance-list {
+  width: 100%;
+  padding: 5px;
+  margin-top: 5px;
+  background: #fff;
+  border-radius: 15px;
+  position: sticky;
+}
+
+.table__body::-webkit-scrollbar-thumb{
+  border-radius: 5rem;
+  background-color: #000;
+  visibility: hidden;
+}
+
+.table__body:hover::-webkit-scrollbar-thumb{
+  visibility: visible;
+}
+
+.table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 15px;
+  min-width: auto;
+  overflow-y: hidden;
+  border-radius: 5px 5px 0 0;
+  width: 100%;
+}
+
+table thead tr {
+  color: #fff;
+  background: rgb(255, 153, 0);
+  text-align: flex;
+  text-align: center;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  left: 0;
+}
+
+.table th,
+.table td {
+  padding: 12px 15px;
+}
+
+.low {
+  border-bottom: 2px solid rgb(255, 0, 0);
+}
+/* Estilos para filas con cantidad entregada alta */
+.high {
+  border-bottom: 2px solid rgba(2, 189, 18, 0.841);
+}
+/* Estilos para la tabla */
+.table tbody tr {
+  border-bottom: 2px solid rgb(255, 153, 0);
+}
+.table tbody tr {
+  background: #f3f3f3;
+  text-align: flex;
+  text-align: center;
+}
+
+.table tbody tr:last-of-type {
+  border-bottom: 2px solid rgb(255, 153, 0);
+}
+
+/* Botones */
+
+.btn-container {
+  display: flex; 
+  justify-content: center; 
+  gap: 20px; /* Space between buttons */
+  margin-top: 20px; 
+}
+
+.btn-add {
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  margin-top: 20px; 
+  margin-bottom: 0px; 
+}
+.btn-del {
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  margin-top: 20px; 
+  margin-bottom: 0px; 
+}
+.btn-icon-add  {
+  font-weight: bold;
+  background-color: #fafafa; 
+  color: #000000; 
+  border: 1px solid #000000; 
+  padding: 10px 20px; 
+  font-size: 16px; 
+  border-radius: 8px; 
+  cursor: pointer; 
+  text-transform: uppercase; 
+  display: center;
+  align-items: center; 
+}
+.btn-icon-del  {
+  font-weight: bold;
+  background-color: #fafafa; 
+  color: #000000; 
+  border: 1px solid #000000; 
+  padding: 10px 20px; 
+  font-size: 16px; 
+  border-radius: 8px; 
+  cursor: pointer; 
+  text-transform: uppercase; 
+  display: center;
+  align-items: center; 
+}
+.btn-icon-add i {
+  margin-right: 7px; 
+}
+
+.btn-icon-add:hover {
+  background-color: rgba(2, 189, 18, 0.841);
+}
+.btn-icon-del:hover {
+  background-color: rgb(231, 3, 3);
+}
+/* Botones */
+
+.btn-editar {
+  background-color: transparent;
+  border: none; 
+  padding: 0; 
+}
+
+.btn-editar i {
+  font-size: 16px; 
+  color: #000000; 
+}
+
+.btn-editar:hover i {
+  color: rgb(255, 153, 0); 
+}
+
+/* Contenedor de formulario desplegable */
+
+.form-container {
+  position: fixed;
+  top: -110%; 
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 600px;
+  background: white;
+  border: 2px solid rgb(255, 153, 0);
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: top 0.3s ease-in-out;
+  z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
+  max-height: 90vh; /* Ajusta la altura máxima según tus necesidades */
+  overflow-y: auto; /* Permite el desplazamiento vertical */
+}
+
+.form-container select option {
+  font-size: 16px;
+}
+
+.form-container.active {
+  top: 0; /* Ajustado para que se despliegue desde la parte superior */
+}
+
+.form-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-container label {
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Estilos para select */
+select {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.proveedor-container {
+  display: block;
+  margin-top: 1rem; /* Ajusta este valor según sea necesario */
+}
+
+/* Inputs con borde de 1px */
+.form-container input {
+  border-radius: 10px;
+  margin-top: 5px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #D67E02;
+}
+
+.form-container label {
+  margin-top: 10px;
+}
+
+.form-container input, .form-container button {
+  margin-top: 5px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.form-container .btn-submit:hover {
+  background-color: #D67E02;
+}
+
+.imput {
+  border: 1px solid #D67E02;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/leben.jpg') }}">
+
+    <!-- Conexión con estilos CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="{{ url_for('static', filename='js/tabla.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+    <script>
+
+        function toggleForm(formId) {
+            const overlay = document.getElementById('overlay');
+            const form = document.getElementById(formId);
+            if (form.classList.contains('active')) {
+                form.classList.remove('active');
+                overlay.classList.remove('active');
+            } else {
+
+                const activeForms = document.querySelectorAll('.form-container.active');
+                activeForms.forEach(activeForm => activeForm.classList.remove('active'));
+                overlay.classList.remove('active');
+
+                form.classList.add('active');
+                overlay.classList.add('active');
+            }
+        }
+        function agregarEntrada(idProducto) {
+        const cantidadentrada = prompt("Ingrese la cantidad de entrada:");
+        const fechaentrada = prompt("Ingrese la fecha de entrada (YYYY-MM-DD):");
+
+        if (cantidadentrada && fechaentrada) {
+            fetch('{{ url_for("inventario") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `producto=${idProducto}&cantidadentrada=${cantidadentrada}&fechaentrada=${fechaentrada}`
+            }).then(response => {
+                if (response.ok) {
+                    alert('Entrada de inventario agregada con éxito');
+                    window.location.reload(); // Recargar la página para ver los cambios
+                } else {
+                    alert('Error al agregar la entrada');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                alert('Error al agregar la entrada');
+            });
+        }
+    }
+
+    </script>
+</head>
+
+<body>
+
+    <!-- Menu header -->
+    <header>
+        <div class="back">
+            <div class="menu container">
+                <a href="{{ url_for('index')}}" class="logo"><img
+                        src="{{ url_for('static', filename='img/leben.jpg') }}" alt="Logo"></a>
+                <nav class="navbar">
+                    <ul>
+                        <li><a href="#">Bienvenido al modulo de inventario.</a></li>
+                        <li><a href="{{ url_for('index')}}"><i class="fa-solid fa-right-from-bracket"></i></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido -->
+    <div class="btn-container">
+        <div class="btn-add">
+            <button class="btn-icon-add" onclick="toggleForm('form-producto')">
+                <i class="fa fa-plus"></i> Productos
+            </button>
+        </div>
+        <div class="btn-add">
+            <button class="btn-icon-add" onclick="toggleForm('form-categoria')">
+                <i class="fa fa-plus"></i> Categorias
+            </button>
+        </div>
+        <div class="btn-add">
+            <button class="btn-icon-add" onclick="toggleForm('form-proveedor')">
+                <i class="fa fa-plus"></i> Proveedores
+            </button>
+        </div>
+        <div class="btn-del">
+            <button class="btn-icon-del">
+                <i class="fa-solid fa-trash"></i> Eliminar
+            </button>
+        </div>
+    </div>
+
+    <!-- Formulario de Producto -->
+    <div id="form-producto" class="form-container">
+        <h1>Agregar Producto</h1>
+        <form id="producto-form" action="{{ url_for('inventario') }}" method="POST" enctype="multipart/form-data">
+            <label for="nombreproducto">Nombre del Producto:</label>
+            <input type="text" id="nombreproducto" name="nombreproducto" required>
+        
+            <label for="valorproducto">Valor del Producto:</label>
+            <input type="number" id="valorproducto" name="valorproducto" required min="0">
+        
+            <label for="proveedor">Proveedor:</label>
+            <select id="proveedor" name="proveedor" required>
+                {% for proveedor in proveedores %}
+                <option value="{{ proveedor.idproveedor }}">{{ proveedor.nombreproveedor }}</option>
+                {% endfor %}
+            </select>
+        
+            <label for="categoria">Categoría:</label>
+            <select id="categoria" name="categoria" required>
+                {% for categoria in categorias %}
+                <option value="{{ categoria.idcategoria }}">{{ categoria.nombrecategoria }}</option>
+                {% endfor %}
+            </select>
+        
+            <label for="talla">Talla:</label>
+            <select id="talla" name="talla">
+                {% for talla in tallas %}
+                <option value="{{ talla.idtalla }}">
+                    {% if talla.numerotalla %}
+                    {{ talla.numerotalla }}
+                    {% elif talla.letratalla %}
+                    {{ talla.letratalla }}
+                    {% endif %}
+                </option>
+                {% endfor %}
+            </select>
+        
+            <label for="imgproductos">Imagen del Producto:</label>
+            <input type="file" id="imgproductos" name="imgproductos" accept="image/*" required>
+        
+            <div class="btn-container">
+                <div class="btn-del">
+                    <button type="button" onclick="toggleForm('form-producto')" class="btn-icon-del">
+                        <i>Cancelar</i>
+                    </button>
+                </div>
+                <div class="btn-add">
+                    <button type="submit" class="btn-icon-add">
+                        <i>Guardar</i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Formulario de Entrada -->
+    <div id="form-entrada" class="form-container">
+        <h1>Agregar Entrada de Inventario</h1>
+        {% if error_message %}
+        <div class="error-message">{{ error_message }}</div>
+        {% endif %}
+        <form id="entrada-form" action="{{ url_for('inventario') }}" method="POST">
+            <label for="producto">Producto:</label>
+            <select id="producto" name="producto" required>
+                {% for producto in productos %}
+                <option value="{{ producto.idproducto }}">{{ producto.nombreproducto }}</option>
+                {% endfor %}
+            </select>
+            
+            <label for="cantidadentrada">Cantidad de Entrada:</label>
+            <input type="number" id="cantidadentrada" name="cantidadentrada" required min="0">
+            
+            <label for="fechaentrada">Fecha de Entrada:</label>
+            <input type="date" id="fechaentrada" name="fechaentrada" required>
+            
+            <div class="btn-container">
+                <div class="btn-del">
+                    <button type="button" onclick="toggleForm('form-entrada')" class="btn-icon-del">
+                        <i>Cancelar</i>
+                    </button>
+                </div>
+                <div class="btn-add">
+                    <button type="submit" class="btn-icon-add">
+                        <i>Guardar</i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    
+    <!-- Formulario de Categoría -->
+    <div id="form-categoria" class="form-container">
+        <h1>Agregar Categoría</h1>
+        <form id="categoria-form" method="POST">
+
+            <label for="nombrecategoria">Nombre de la Categoría:</label>
+            <input type="text" id="nombrecategoria" name="nombrecategoria" required>
+            <div class="btn-container">
+                <div class="btn-del">
+                    <button type="button" onclick="toggleForm('form-categoria')" class="btn-icon-del">
+                        <i>Cancelar</i>
+                    </button>
+                </div>
+                <div class="btn-add">
+                    <button type="submit" class="btn-icon-add">
+                        <i>Guardar</i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <!-- Formulario de Proveedor -->
+    <div id="form-proveedor" class="form-container">
+        <h1>Agregar Proveedor</h1>
+        <form id="proveedor-form" action="" method="POST">
+            <label for="nombreproveedor">Nombre del Proveedor:</label>
+            <input type="text" id="nombreproveedor" name="nombreproveedor" required>
+            <label for="contactoproveedor">Contacto del Proveedor:</label>
+            <input type="text" id="contactoproveedor" name="contactoproveedor" required>
+            <div class="btn-container">
+                <div class="btn-del">
+                    <button type="button" onclick="toggleForm('form-proveedor')" class="btn-icon-del">
+                        <i>Cancelar</i>
+                    </button>
+                </div>
+                <div class="btn-add">
+                    <button type="submit" class="btn-icon-add">
+                        <i>Guardar</i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Fondo oscuro -->
+    <div id="overlay" class="overlay" onclick="toggleForm()"></div>
+
+    <!-- Tabla -->
+    <section class="main">
+        <section class="attendance">
+            <div class="attendance-list">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre Producto</th>
+                            <th>Categoría</th>
+                            <th>Talla</th>
+                            <th>Stock</th>
+                            <th>Precio</th>
+                            <th>Fecha Entrada</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pr in data %}
+                        <tr>
+                            <td>{{ pr.idproducto }}</td>
+                            <td>{{ pr.nombreproducto }}</td>
+                            <td>{{ pr.nombrecategoria }}</td>
+                            <td>
+                                {% if pr.numerotalla and pr.letratalla %}
+                                {{ pr.numerotalla }}{{ pr.letratalla }}
+                                {% elif pr.numerotalla %}
+                                {{ pr.numerotalla }}
+                                {% elif pr.letratalla %}
+                                {{ pr.letratalla }}
+                                {% else %}
+                                -
+                                {% endif %}
+                            </td>
+                            <td>{{ pr.stockinventario }}</td>
+                            <td>{{ pr.valorproducto }}</td>
+                            <td>{{ pr.fechaentrada }}</td>
+                            <td>
+                                <button onclick="toggleForm('form-entrada')" class="btn-editar">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </section>
+    
+
+
+    <!-- Menu footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-row">
+                <div class="footer-links">
+                    <ul>
+                        <li><a href="{{ url_for('index')}}"><img src="{{ url_for('static', filename='img/leben.jpg') }}"
+                                    alt="logo"></a></li>
+                        <li>
+                            <h3>Acerca de Leben</h3>
+                        </li>
+                        <li>
+                            <p>Desde el 2016 mostrando el talento colombiano en el diseño de ropa y accesorios</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Menú</h4>
+                    <ul>
+                        <li><a href="{{ url_for('index')}}">Inicio</a></li>
+                        <li><a href="{{ url_for('productos')}}">Productos</a></li>
+                        <li><a href="{{ url_for('contacto')}}">Contacto</a></li>
+                        <li><a href="{{ url_for('nosotros')}}">Nosotros</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Distribuidores</h4>
+                    <ul>
+                        <li><a href="https://www.instagram.com/tejistarco/">Tejistar</a></li>
+                        <li><a href="https://www.instagram.com/sativatattoo_/">Satica Tattoo Studio</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Redes</h4>
+                    <div class="social-link">
+                        <a href="https://www.facebook.com/LebenLBN"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/leben_brand/"><i class="fab fa-instagram"></i></a>
+                        <a
+                            href="https://api.whatsapp.com/send/?phone=573105267491&text=Me+interesa+un+producto+LEBEN+-+hecho+en+Colombia+leben.com.co&type=phone_number&app_absent=0"><i
+                                class="fab fa-whatsapp"></i></a>
+                        <a href="https://www.youtube.com/c/LebenTV/videos"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+</body>
+
+</html>

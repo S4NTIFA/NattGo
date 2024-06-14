@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/leben.jpg') }}">
+
+    <!--conexion con estilos css-->
+    <script src="{{ url_for('static', filename='js/carrito.js') }}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/productos.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <!--menu header-->
+    <header>
+        <div class="back">
+            <div class="menu container">
+                <a href="{{ url_for ('index')}}" class="logo"><img
+                        src="{{ url_for('static', filename='img/leben.jpg') }}" alt=""></a>
+                <nav class="navbar">
+                    <ul>
+                        <li><a href="{{ url_for ('index')}}">Inicio</a></li>
+                        <li><a href="{{ url_for ('productos')}}">Productos</a></li>
+                        <li><a href="{{ url_for ('contacto')}}">contacto</a></li>
+                        <li><a href="{{ url_for ('nosotros')}}">Nosotros</a></li>
+                        <li><a href="{{ url_for ('inicioSesion')}}"><i class="fa-solid fa-user"></i></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!--Catalogo de productos-->
+    <!--productos mas vendidos-->
+    <div class="titulo container">
+        <h2>Productos mas vendidos</h2>
+    </div>
+    <section class="contenedor">
+        <div class="contenedor-items">
+            <div class="item">
+                <span class="titulo-item">Leder</span>
+                <img src="{{ url_for('static', filename='img/Tenis/Leder/copPARA-WEB2.jpg') }}" alt="" class="img-item">
+                <span class="precio-item">$110.000</span>
+                <button class="btn-2" type="submit">Agregar al carrito</button>
+            </div>
+            <div class="item">
+                <span class="titulo-item">Ryan</span>
+                <img src="{{ url_for('static', filename='img/Tenis/Ryan/Ryan-blackPARA WEB.jpg') }}" alt=""
+                    class="img-item">
+                <span class="precio-item">$110.000</span>
+                <button class="btn-2" type="submit">Agregar al carrito</button>
+            </div>
+            <div class="item">
+                <span class="titulo-item">Freemode</span>
+                <img src="{{ url_for('static', filename='img/Chaquetas/Freemode/para-web2.jpg') }}" alt=""
+                    class="img-item">
+                <span class="precio-item">$120.000</span>
+                <button class="btn-2" type="submit">Agregar al carrito</button>
+            </div>
+            <div class="item">
+                <span class="titulo-item">Canguro</span>
+                <img src="{{ url_for('static', filename='img/Otros/canguro.jpg') }}" alt="" class="img-item">
+                <span class="precio-item">$50.000</span>
+                <button class="btn-2" type="submit">Agregar al carrito</button>
+            </div>
+        </div>
+    </section>
+
+    <!--todos los productos-->
+    <div class="titulo contenedor">
+        <h2>Todos los Productos</h2>
+    </div>
+    <section class="contenedor">
+        <div class="contenedor-items">
+            {% for producto in productos %}
+            <div class="item">
+                <span class="titulo-item">{{ producto['nombreproducto'] }}</span>
+                {% if producto['imgproductos'] %}
+                <img src="{{ url_for('static', filename='uploads/' + producto['imgproductos']) }}"
+                    alt="{{ producto['nombreproducto'] }}">
+                {% else %}
+                <p>No hay imagen disponible</p>
+                {% endif %}
+                <span class="precio-item">${{ producto['valorproducto'] }}</span>
+                <form method="POST">
+                    <input type="hidden" name="id_producto" value="{{ producto['idproducto'] }}">
+                    <input type="hidden" name="nombre_producto" value="{{ producto['nombreproducto'] }}">
+                    <input type="hidden" name="precio_producto" value="{{ producto['valorproducto'] }}">
+                    <button class="btn-2" type="submit">Agregar al carrito</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!--carrito de compras-->
+    <div class="carrito container" id="{{ url_for('static', filename='js/carrito.js') }}">
+        <div class="header-carrito">
+            <h2>Tu Carrito</h2>
+        </div>
+
+        <div class="carrito-items"></div>
+        <div class="carrito-total">
+            <div class="fila">
+                <strong>Tu Total</strong>
+                <span class="carrito-precio-total">$120.000,00</span>
+            </div>
+            <h3>Tienes que iniciar sesión primero !!</h3>
+            <a href="{{ url_for('inicioSesion')}}" class="btn-1">Iniciar Sesión <i
+                    class="fa-solid fa-circle-exclamation"></i> </a>
+        </div>
+    </div>
+
+    <!--menu footer-->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-row">
+                <div class="footer-links">
+                    <ul>
+                        <li><a href="{{ url_for('index')}}"><img src="{{ url_for('static', filename='img/leben.jpg') }}"
+                                    alt="logo"></a></li>
+                        <li>
+                            <h3>Acerca de Leben</h3>
+                        </li>
+                        <li>
+                            <p>Desde el 2016 mostrando el talento colombiano en el diseño de ropa y accesorios</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Menú</h4>
+                    <ul>
+                        <li><a href="{{ url_for('index')}}">Inicio</a></li>
+                        <li><a href="{{ url_for('productos')}}">Productos</a></li>
+                        <li><a href="{{ url_for('contacto')}}">Contacto</a></li>
+                        <li><a href="{{ url_for('nosotros')}}">Nosotros</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Distribuidores</h4>
+                    <ul>
+                        <li><a href="https://www.instagram.com/tejistarco/">Tejistar</a></li>
+                        <li><a href="https://www.instagram.com/sativatattoo_/">Satica Tattoo Studio</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Redes</h4>
+                    <div class="social-link">
+                        <a href="https://www.facebook.com/LebenLBN"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/leben_brand/"><i class="fab fa-instagram"></i></a>
+                        <a
+                            href="https://api.whatsapp.com/send/?phone=573105267491&text=Me+interesa+un+producto+LEBEN+-+hecho+en+Colombia+leben.com.co&type=phone_number&app_absent=0"><i
+                                class="fab fa-whatsapp"></i></a>
+                        <a href="https://www.youtube.com/c/LebenTV/videos"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
