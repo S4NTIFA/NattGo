@@ -9,10 +9,10 @@ app.secret_key = 'your_secret_key'
 
 # Conexión a la base de datos
 database = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    passwd="",
-    db="nattgo"
+    host="leben.mysql.pythonanywhere-services.com",
+    user="leben",
+    passwd="nattgo.21",
+    db="leben$default"
 )
 
 # Rutas adicionales
